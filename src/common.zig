@@ -10,9 +10,7 @@ const mem = std.mem;
 /// broken for translate-c, so we redefine the function doing what the orignal
 /// does internally as  workaround.
 pub fn signal_connect(instance: c.gpointer, detailed_signal: [*c]const c.gchar, c_handler: c.GCallback, data: c.gpointer) c.gulong {
-    var zero: u32 = 0;
-    const flags: *c.GConnectFlags = @ptrCast(*c.GConnectFlags, &zero);
-    return c.g_signal_connect_data(instance, detailed_signal, c_handler, data, null, flags.*);
+    return c.g_signal_connect_data(instance, detailed_signal, c_handler, data, null, mem.zeroes(c.GConnectFlags));
 }
 
 /// Convenience function which returns a proper GtkWidget pointer or null

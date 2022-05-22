@@ -1,9 +1,8 @@
 const std = @import("std");
 const allocator = std.heap.page_allocator;
 const fmt = std.fmt;
-const GTK = @import("gtk");
-const gtk = GTK.gtk;
-const c = GTK.c;
+const gtk = @import("gtk");
+const c = gtk.c;
 
 var scale0: gtk.Scale = undefined;
 var scale1: gtk.Scale = undefined;

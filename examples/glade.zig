@@ -1,7 +1,6 @@
 const std = @import("std");
-const GTK = @import("gtk");
-const c = GTK.c;
-const gtk = GTK.gtk;
+const gtk = @import("gtk");
+const c = gtk.c;
 
 pub fn main() !void {
     const app = c.gtk_application_new("org.gtk.example", c.G_APPLICATION_FLAGS_NONE) orelse @panic("null app :(");
