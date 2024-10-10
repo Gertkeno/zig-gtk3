@@ -3,8 +3,7 @@ const common = @import("common.zig");
 const bool_to_c_int = common.bool_to_c_int;
 const Container = @import("container.zig").Container;
 const Dialog = @import("dialog.zig").Dialog;
-const enums = @import("enums.zig");
-const WindowType = enums.WindowType;
+const WindowType = @import("enums.zig").WindowType;
 const Widget = @import("widget.zig").Widget;
 
 pub const ApplicationWindow = struct {
@@ -51,7 +50,7 @@ pub const Window = struct {
     }
 
     pub fn set_title(self: Self, title: [:0]const u8) void {
-        c.gtk_window_set_title(self.ptr, title);
+        c.gtk_window_set_title(self.ptr, title.ptr);
     }
 
     pub fn set_default_size(self: Self, hsize: c_int, vsize: c_int) void {

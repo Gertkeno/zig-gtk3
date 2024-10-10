@@ -33,7 +33,7 @@ const Widgets = struct {
     }
 
     fn connect_signals(self: Widgets) void {
-        self.button.connect_clicked(@ptrCast(c.GCallback, button_callback), null);
+        self.button.connect_clicked(@ptrCast(c.GCallback, &button_callback), null);
     }
 };
 
@@ -44,7 +44,7 @@ pub fn main() !void {
     _ = c.g_signal_connect_data(
         app,
         "activate",
-        @ptrCast(c.GCallback, activate),
+        @ptrCast(c.GCallback, &activate),
         null,
         null,
         c.G_CONNECT_AFTER,

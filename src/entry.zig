@@ -1,5 +1,4 @@
 const c = @import("cimport.zig");
-const common = @import("common.zig");
 
 const Button = @import("button.zig").Button;
 const Widget = @import("widget.zig").Widget;
@@ -34,7 +33,7 @@ pub const Entry = struct {
     }
 
     pub fn set_text(self: Entry, text: [:0]const u8) void {
-        c.gtk_entry_set_text(self.ptr, text);
+        c.gtk_entry_set_text(self.ptr, text.ptr);
     }
 
     pub fn get_text(self: Entry, allocator: mem.Allocator) ?[:0]const u8 {
@@ -50,7 +49,7 @@ pub const Entry = struct {
     // not implemented get_text_area()
 
     pub fn set_visibility(self: Entry, visible: bool) void {
-        c.gtk_entry_set_visibility(self.ptr, common.bool_to_c_int(visible));
+        c.gtk_entry_set_visibility(self.ptr, if (visible) 1 else 0);
     }
 
     // not implemented set_invisible_char()
@@ -75,7 +74,7 @@ pub const EntryBuffer = struct {
     ptr: *c.GtkEntryBuffer,
 
     pub fn set_text(self: EntryBuffer, text: [:0]const u8, len: c_int) void {
-        c.gtk_entry_buffer_set_text(self.ptr, text, len);
+        c.gtk_entry_buffer_set_text(self.ptr, text.ptr, len);
     }
 };
 

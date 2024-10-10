@@ -119,7 +119,7 @@ pub const Popover = struct {
     /// with the name “mygroup” then you would use the action name
     /// “mygroup.quit” in your GMenuModel.
     pub fn bind_model(self: Self, model: ?*c.GMenuModel, action_namespace: ?[:0]const u8) void {
-        c.gtk_popover_bind_model(self.ptr, if (model) |m| m else null, if (action_namespace) |a| a else null);
+        c.gtk_popover_bind_model(self.ptr, if (model) |m| m else null, if (action_namespace) |a| a.ptr else null);
     }
 
     /// Pops popover up. This is different than a gtk_widget_show() call in that
@@ -171,12 +171,12 @@ pub const Popover = struct {
     /// space (eg. if close to the window edges), the GtkPopover may choose to
     /// appear on the opposite side
     pub fn set_position(self: Self, position: PositionType) void {
-        c.gtk_popover_set_position(self.ptr, position);
+        c.gtk_popover_set_position(self.ptr, @enumToInt(position));
     }
 
     /// Returns the preferred position of self.
     pub fn get_position(self: Self) PositionType {
-        return c.gtk_popover_get_position(self.ptr);
+        return @intToEnum(PositionType, c.gtk_popover_get_position(self.ptr));
     }
 
     /// Sets a constraint for positioning this popover.
@@ -184,12 +184,12 @@ pub const Popover = struct {
     /// Note that not all platforms support placing popovers freely, and may
     /// already impose constraints.
     pub fn set_constrain_to(self: Self, constraint: Constraint) void {
-        c.gtk_popover_set_constraint_to(self.ptr, constraint);
+        c.gtk_popover_set_constraint_to(self.ptr, @enumToInt(constraint));
     }
 
     /// Returns the constraint for placing this popover. See set_constrain_to().
     pub fn get_constrain_to(self: Self) Constraint {
-        return c.gtk_popover_get_constrain_to(self.ptr);
+        return @intToEnum(Container, c.gtk_popover_get_constrain_to(self.ptr));
     }
 
     /// Sets whether popover is modal, a modal popover will grab all input
@@ -342,7 +342,7 @@ pub const PopoverMenu = struct {
     /// property is set, so this function is only needed when you are using
     /// other kinds of widgets to initiate menu changes.
     pub fn open_submenu(self: Self, name: [:0]const u8) void {
-        c.gtk_popover_menu_open_submenu(self.ptr, name);
+        c.gtk_popover_menu_open_submenu(self.ptr, name.ptr);
     }
 
     pub fn as_buildable(self: Self) Buildable {

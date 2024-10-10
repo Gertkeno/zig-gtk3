@@ -21,7 +21,7 @@
 | GtkStack |   |   | x |
 | GtkStackSwitcher |   |   | x |
 | GtkStackSidebar |   |   | x |
-| GtkActionBar | x |   |   |
+| GtkActionBar |   |   | x |
 | GtkHeaderBar |   |   | x |
 | GtkOverlay | x |   |   |
 | GtkButtonBox |   |   | x |
@@ -33,7 +33,7 @@
 | GtkAspectFrame |   |   | x |
 | GtkFixed |   |   | x |
 | GtkLabel |   |   | x |
-| GtkImage | x |   |   |
+| GtkImage |   |   | x |
 | GtkSpinner |   |   | x |
 | GtkInfoBar | x |   |   |
 | GtkProgressBar | x |   |   |

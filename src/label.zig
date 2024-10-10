@@ -46,7 +46,7 @@ pub const Label = struct {
     /// an empty label widget.
     pub fn new(text: ?[:0]const u8) Self {
         return Self{
-            .ptr = @ptrCast(*c.GtkLabel, c.gtk_label_new(if (text) |t| t else null)),
+            .ptr = @ptrCast(*c.GtkLabel, c.gtk_label_new(if (text) |t| t.ptr else null)),
         };
     }
 
@@ -58,7 +58,7 @@ pub const Label = struct {
     ///
     /// This function will set the “use-markup” property to `false` as a side effect.
     pub fn set_text(self: Self, text: [:0]const u8) void {
-        c.gtk_label_set_text(self.ptr, text);
+        c.gtk_label_set_text(self.ptr, text.ptr);
     }
 
     /// Sets a PangoAttrList; the attributes in the list are applied to the label text.
@@ -83,7 +83,7 @@ pub const Label = struct {
     /// const format: [:0]const u8 = "<span style=\"italic\">\%s</span>";
     /// var markup: [:0]const u8 = undefined;
     ///
-    /// markup = c.g_markup_printf_escaped(format, str);
+    /// markup = c.g_markup_printf_escaped(format.ptr, str.ptr);
     /// label.set_markup(label, markup);
     /// c.g_free(markup);
     /// ```
@@ -92,7 +92,7 @@ pub const Label = struct {
     /// If you set the label contents using the “label” property you should also ensure
     /// that you set the “use-markup” property accordingly.
     pub fn set_markup(self: Self, text: [:0]const u8) void {
-        c.gtk_label_set_markup(self.ptr, text);
+        c.gtk_label_set_markup(self.ptr, text.ptr);
     }
 
     /// Parses str which is marked up with the Pango text markup language, setting the
@@ -103,14 +103,14 @@ pub const Label = struct {
     /// The mnemonic key can be used to activate another widget, chosen automatically,
     /// or explicitly using set_mnemonic_widget().
     pub fn set_markup_with_mnemonic(self: Self, markup: [:0]const u8) void {
-        c.gtk_label_set_markup_with_mnemonic(self.ptr, markup);
+        c.gtk_label_set_markup_with_mnemonic(self.ptr, markup.ptr);
     }
 
     /// The pattern of underlines you want under the existing text within the GtkLabel
     /// widget. For example if the current text of the label says “FooBarBaz” passing a
     /// pattern of “___ ___” will underline “Foo” and “Baz” but not “Bar”.
     pub fn set_pattern(self: Self, pattern: [:0]const u8) void {
-        c.gtk_label_set_pattern(self.ptr, pattern);
+        c.gtk_label_set_pattern(self.ptr, pattern.ptr);
     }
 
     /// Sets the alignment of the lines in the text of the label relative to each other.
@@ -118,7 +118,7 @@ pub const Label = struct {
     /// If you instead want to set the alignment of the label as a whole, use Widget.set_halign()
     /// instead. Label.set_justify() has no effect on labels containing only a single line.
     pub fn set_justify(self: Self, justify: Justification) void {
-        c.gtk_label_set_justify(self.ptr, justify);
+        c.gtk_label_set_justify(self.ptr, @enumToInt(justify));
     }
 
     /// Sets the “xalign” property for label.
@@ -134,7 +134,7 @@ pub const Label = struct {
     /// Sets the mode used to ellipsize (add an ellipsis: "...") to the text
     /// if there is not enough space to render the entire string.
     pub fn set_ellipsize(self: Self, ellipsize: EllipsizeMode) void {
-        c.gtk_label_set_ellipsize(self.ptr, ellipsize);
+        c.gtk_label_set_ellipsize(self.ptr, @enumToInt(ellipsize));
     }
 
     /// Sets the desired width in characters of label to n_chars.
@@ -162,7 +162,7 @@ pub const Label = struct {
     /// If line wrapping is on (see Label.et_line_wrap()) this controls how the line
     /// wrapping is done. The default is `WrapMode.word` which means wrap on word boundaries.
     pub fn set_line_wrap_mode(self: Self, mode: WrapMode) void {
-        c.gtk_label_set_line_wrap_mode(self.ptr, mode);
+        c.gtk_label_set_line_wrap_mode(self.ptr, @enumToInt(mode));
     }
 
     /// Sets the number of lines to which an ellipsized, wrapping label should be
@@ -220,7 +220,7 @@ pub const Label = struct {
     /// or menu item, the button or menu item will automatically become the mnemonic widget and be
     /// activated by the mnemonic.
     pub fn new_with_mnemonic(str: [:0]const u8) Self {
-        return Self{ .ptr = @ptrCast(*c.GtkLabel, c.gtk_label_new_with_mnemonic(str)) };
+        return Self{ .ptr = @ptrCast(*c.GtkLabel, c.gtk_label_new_with_mnemonic(str.ptr)) };
     }
 
     /// Selects a range of characters in the label, if the label is selectable. See
@@ -254,7 +254,7 @@ pub const Label = struct {
     /// The mnemonic key can be used to activate another widget, chosen automatically, or explicitly
     /// using Label.set_mnemonic_widget().
     pub fn set_text_with_mnemonic(self: Self, str: [:0]const u8) void {
-        c.gtk_label_set_text_with_mnemonic(self.ptr, str);
+        c.gtk_label_set_text_with_mnemonic(self.ptr, str.ptr);
     }
 
     /// Gets the attribute list that was set on the label using Label.set_attributes(), if any. This
@@ -267,7 +267,7 @@ pub const Label = struct {
 
     /// Returns the justification of the label. See Lable.set_justify().
     pub fn get_justify(self: Self) Justification {
-        return c.gtk_label_get_justify(self.ptr);
+        return @intToEnum(Justification, c.gtk_label_get_justify(self.ptr));
     }
 
     /// Gets the “xalign” property for label.
@@ -282,7 +282,7 @@ pub const Label = struct {
 
     /// Returns the ellipsizing position of the label. See Label.set_ellipsize().
     pub fn get_ellipsize(self: Self) EllipsizeMode {
-        return c.gtk_label_get_ellipsize(self.ptr);
+        return @intToEnum(EllipsizeMode, c.gtk_label_get_ellipsize(self.ptr));
     }
 
     /// Retrieves the desired width of label, in characters. See Label.set_width_chars().
@@ -319,7 +319,7 @@ pub const Label = struct {
 
     /// Returns line wrap mode used by the label. See Label.set_line_wrap_mode().
     pub fn get_line_wrap_mode(self: Self) WrapMode {
-        return c.gtk_label_get_line_wrap_mode(self.ptr);
+        return @intToEnum(WrapMode, c.gtk_label_get_line_wrap_mode(self.ptr));
     }
 
     /// Gets the number of lines to which an ellipsized, wrapping label should be limited.
@@ -370,7 +370,7 @@ pub const Label = struct {
     /// Sets the text of the label. The label is interpreted as including embedded underlines
     /// and/or Pango markup depending on the values of the “use-underline” and “use-markup” properties.
     pub fn set_label(self: Self, label: [:0]const u8) void {
-        c.gtk_label_set_label(self.ptr, label);
+        c.gtk_label_set_label(self.ptr, label.ptr);
     }
 
     /// Sets whether the text of the label contains markup in Pango’s text markup language.
@@ -505,7 +505,7 @@ pub const AccelLabel = struct {
 
     /// Creates a new GtkAccelLabel.
     pub fn new(label: [:0]const u8) Self {
-        return Self{ .ptr = @ptrCast(*c.GtkAccelLabel, c.gtk_accel_label_new(label)) };
+        return Self{ .ptr = @ptrCast(*c.GtkAccelLabel, c.gtk_accel_label_new(label.ptr)) };
     }
 
     /// Sets the closure to be monitored by this accelerator label. The closure must be

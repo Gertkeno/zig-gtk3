@@ -122,7 +122,7 @@ pub const Notebook = struct {
     }
 
     pub fn set_menu_label_text(self: Notebook, child: Widget, text: [:0]const u8) void {
-        c.gtk_notebook_set_menu_label_text(self.ptr, child.ptr, text);
+        c.gtk_notebook_set_menu_label_text(self.ptr, child.ptr, text.ptr);
     }
 
     pub fn set_tab_label(self: Notebook, child: Widget, label: ?Widget) void {
@@ -130,7 +130,7 @@ pub const Notebook = struct {
     }
 
     pub fn set_tab_label_text(self: Notebook, child: Widget, text: [:0]const u8) void {
-        c.gtk_notebook_set_tab_label_text(self.ptr, child.ptr, text);
+        c.gtk_notebook_set_tab_label_text(self.ptr, child.ptr, text.ptr);
     }
 
     pub fn set_tab_reorderable(self: Notebook, child: Widget, reorderable: bool) void {
@@ -174,13 +174,13 @@ pub const Notebook = struct {
     }
 
     pub fn get_tab_pos(self: Notebook) PositionType {
-        return switch (c.gtk_notebook_get_tab_pos(self.ptr)) {
+        return @intToEnum(PositionType, switch (c.gtk_notebook_get_tab_pos(self.ptr)) {
             c.GTK_POS_LEFT => .left,
             c.GTK_POS_RIGHT => .right,
             c.GTK_POS_TOP => .top,
             c.GTK_POS_BOTTOM => .bottom,
             else => unreachable,
-        };
+        });
     }
 
     pub fn get_tab_reorderable(self: Notebook, child: Widget) bool {
@@ -196,7 +196,7 @@ pub const Notebook = struct {
     }
 
     pub fn set_group_name(self: Notebook, name: [:0]const u8) void {
-        c.gtk_notebook_set_group_name(self.ptr, name);
+        c.gtk_notebook_set_group_name(self.ptr, name.ptr);
     }
 
     pub fn get_group_name(self: Notebook, allocator: mem.Allocator) ?[:0]const u8 {
